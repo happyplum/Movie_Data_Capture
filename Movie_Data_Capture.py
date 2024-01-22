@@ -564,7 +564,7 @@ def main(args: tuple) -> Path:
             check_update(version)
             # Download Mapping Table, parallel version
             def fmd(f) -> typing.Tuple[str, Path]:
-                return ('https://raw.githubusercontent.com/yoshiko2/Movie_Data_Capture/master/MappingTable/' + f,
+                return ('https://raw.githubusercontent.com/happyplum/Movie_Data_Capture/master/MappingTable/' + f,
                         Path.home() / '.local' / 'share' / 'mdc' / f)
 
             map_tab = (fmd('mapping_actor.xml'), fmd('mapping_info.xml'), fmd('c_number.json'))
@@ -639,17 +639,17 @@ def main(args: tuple) -> Path:
         thread_stop = conf.multi_threading()
         thread_list = []
         for movie_path in movie_list:  # 遍历电影列表 交给core处理
-            
+
             count = count + 1
             percentage = str(count / int(count_all) * 100)[:4] + '%'
             print('[!] {:>30}{:>21}'.format('- ' + percentage + ' [' + str(count) + '/' + count_all + '] -',
                                             time.strftime("%H:%M:%S")))
-                
+
             if thread_stop > 0 :
                 while len(thread_list) >= thread_stop :
                     sleep_seconds = random.randint(conf.sleep(), conf.sleep() + 2)
                     time.sleep(sleep_seconds)
-                
+
                 t = threading.Thread(target=create_data_and_move, args=(movie_path, zero_op, no_net_op, oCC, thread_list))
                 thread_list.append(t.getName())
                 t.start()
